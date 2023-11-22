@@ -1,57 +1,93 @@
-
-import {
-    todoInputBox$,
-    todoList$,
-    todoSubmitButton$
-} from "./domElements.js";
+const form = document.querySelector('#new-task-form');
+const button = document.querySelector('#button');
+const list =  document.querySelector('#task-list');
+const field = form['new-task-input'];
 
 
-const todos = [];
+const todoList = [];
 
-const createInputElement = (todo) => {
+createEditButton = () => {
+    const editButton = document.createElement('button');
+    editButton.classList.add = 'edit';
+    editButton.innerText = 'Edit';
 
-    const inputElement = document.createElement('input');
-    inputElement.classList.add("text");
-    inputElement.type = "text";
-    inputElement.value = todo.text;
-    inputElement.setAttribute("readonly", "readonly")
+    //edit task handler
+    editButton.addEventListener('click', (e) => {
+        //logic
+    })
 
-    return inputElement;
+    return editButton;
 }
 
-const createTodoElement = (todo) => {
-    const todo$ = document.createElement('li');
-    const inputElement = createInputElement(todo);
-    todo$.appendChild(inputElement);
-    return todo$;
+createDeleteButton = () => {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add = 'delete';
+    deleteButton.innerText = 'Delete';
+
+    //delete task handler
+    deleteButton.addEventListener('click', (e) => {
+        //logic
+    })
+
+    return deleteButton;
 }
 
-const handleAddTodo = (e) => {
+
+createTask = (localTodo) => {
+
+    const divEl = document.createElement('div');
+    divEl.classList.add = 'div-to-add';
+
+    divEl.classList.add = "todoTasks"
+
+    const inputEl = document.createElement('input');
+    inputEl.classList.add("text");
+    inputEl.type = "text";
+    inputEl.value = localTodo.text;
+    inputEl.setAttribute("readonly", "readonly")
+    divEl.appendChild(inputEl);
+
+
+    //Creating edit button for the task
+    const editButton = createEditButton();
+    divEl.appendChild(editButton);
+
+    //Creating delete button for the task
+    const deleteButton = createDeleteButton();
+    divEl.appendChild(deleteButton);
+
+    return divEl;
+
+}
+
+addTask = (e) => {
     e.preventDefault();
     
-    if(!todoInputBox$.value){
+    if(!field.value){
         alert('Please fill out the task');
         return;
     }
 
-    const todoObj = {
+    const localTodo = {
         id : Date.now(),
-        text : todoInputBox$.value,
+        text : field.value,
+        status : false
     };
 
-    todos.push(todoObj);
-    todoInputBox$.value = "";
+    todoList.push(localTodo);
+    field.value = "";
 
-    renderTodos();
+    loadTask();
    
 }
 
-const renderTodos = () => {
-    todoList$.innerHTML = null;
+loadTask = () => {
+    list.innerHTML = null;
 
-    todos.forEach(todo => {
-        todoList$.appendChild(createTodoElement(todo));
+    todoList.forEach(element => {
+        const child = createTask(element);
+        list.appendChild(child);
     }) 
 }
 
-todoSubmitButton$.addEventListener('click', handleAddTodo)
+button.addEventListener('click', addTask)

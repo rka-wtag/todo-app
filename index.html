@@ -10,17 +10,9 @@
       <div>
         <form id="new-task-form" action="/submit" method="post">
           <label for="name">Name:</label>
+          <input type="text" id="name" name="new-task-input" required />
 
-          <textarea
-            type="text"
-            id="todo-input-box"
-            name="new-task-input"
-            rows="1"
-            required
-          ></textarea
-          >>
-
-          <input id="todo-submit-button" type="submit" value="Submit" />
+          <input id="button" type="submit" value="Submit" />
         </form>
       </div>
     </header>
@@ -31,6 +23,6 @@
       <div id="task-list"></div>
     </main>
 
-    <script src="./app.js" type="module"></script>
+    <script src="./app.js"></script>
   </body>
 </html>
