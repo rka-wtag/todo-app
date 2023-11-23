@@ -6,7 +6,7 @@ import {
 } from "./domElements.js";
 
 
-const todos = [];
+let todos = [];
 
 const createInputElement = (todo) => {
 
@@ -19,10 +19,30 @@ const createInputElement = (todo) => {
     return inputElement;
 }
 
+const handleDeleteTodo = (todo) => {
+    todoList$.innerHTML = null;
+    console.log(todo);
+    todos = todos.filter(todoElement => todoElement.id !== todo.id);
+    renderTodos();
+}
+
+const createTodoDeleteButton = (todo) => {
+    const todoDeleteButton = document.createElement('button');
+    todoDeleteButton.classList.add('todo-delete-button');
+    todoDeleteButton.innerText = 'Delete';
+
+    todoDeleteButton.addEventListener('click', () => {
+        handleDeleteTodo(todo);
+    })
+    return todoDeleteButton;
+}
+
 const createTodoElement = (todo) => {
     const todo$ = document.createElement('li');
     const inputElement = createInputElement(todo);
+    const todoDeleteButton$ = createTodoDeleteButton(todo);
     todo$.appendChild(inputElement);
+    todo$.appendChild(todoDeleteButton$);
     return todo$;
 }
 
