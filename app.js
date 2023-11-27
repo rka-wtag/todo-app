@@ -8,39 +8,34 @@ import {
 
 let todos = [];
 
-const createInputElement = (todo) => {
-
+const onCreateInputField = (todo) => {
     const inputElement = document.createElement('input');
     inputElement.classList.add("text");
     inputElement.type = "text";
     inputElement.value = todo.text;
     inputElement.setAttribute("readonly", "readonly")
-
     return inputElement;
 }
-
-const handleDeleteTodo = (todo) => {
-    todoList$.innerHTML = null;
-    console.log(todo);
+const handleDelete = (todo) => {
     todos = todos.filter(todoElement => todoElement.id !== todo.id);
     renderTodos();
 }
 
-const createTodoDeleteButton = (todo) => {
-    const todoDeleteButton = document.createElement('button');
-    todoDeleteButton.classList.add('todo-delete-button');
-    todoDeleteButton.innerText = 'Delete';
+const onCreateDeleteButton = (todo) => {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('todo-delete-button');
+    deleteButton.innerText = 'Delete';
 
-    todoDeleteButton.addEventListener('click', () => {
-        handleDeleteTodo(todo);
+    deleteButton.addEventListener('click', () => {
+        handleDelete(todo);
     })
-    return todoDeleteButton;
+    return deleteButton;
 }
 
-const createTodoElement = (todo) => {
+const onCreateElement = (todo) => {
     const todo$ = document.createElement('li');
-    const inputElement = createInputElement(todo);
-    const todoDeleteButton$ = createTodoDeleteButton(todo);
+    const inputElement = onCreateInputField(todo);
+    const todoDeleteButton$ = onCreateDeleteButton(todo);
     todo$.appendChild(inputElement);
     todo$.appendChild(todoDeleteButton$);
     return todo$;
@@ -70,7 +65,7 @@ const renderTodos = () => {
     todoList$.innerHTML = null;
 
     todos.forEach(todo => {
-        todoList$.appendChild(createTodoElement(todo));
+        todoList$.appendChild(onCreateElement(todo));
     }) 
 }
 
