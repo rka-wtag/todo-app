@@ -58,11 +58,32 @@ const onCreateEditButton = (inputElement) => {
     return editButton;
 }
 
+const handleDone = (todo, inputElement) => {
+    todo.done = !todo.done;
+    inputElement.classList.toggle('completed', todo.done);
+}
+
+const onCreateCheckbox = (todo, inputElement) => {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = todo.done;
+
+    checkbox.addEventListener('click', () => {
+        handleDone(todo, inputElement);
+    });
+
+    return checkbox;
+
+}
+
 const onCreateElement = (todo) => {
     const todoElement = document.createElement('li');
     const inputElement = onCreateInputField(todo);
     const todoDeleteButton$ = onCreateDeleteButton(todo);
     const todoEditButton$ = onCreateEditButton(inputElement);
+    const checkbox = onCreateCheckbox(todo, inputElement);
+    inputElement.classList.toggle('completed', todo.done);
+    todoElement.appendChild(checkbox);
     todoElement.appendChild(inputElement);
     todoElement.appendChild(todoDeleteButton$);
     todoElement.appendChild(todoEditButton$);
@@ -80,6 +101,7 @@ const handleAddTodo = (e) => {
     const todoObj = {
         id : Date.now(),
         text : todoInputBox$.value,
+        done : false
     };
 
     todos.push(todoObj);
