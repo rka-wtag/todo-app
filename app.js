@@ -13,7 +13,6 @@ const onCreateInputField = (todo) => {
     inputElement.classList.add("text");
     inputElement.type = "text";
     inputElement.value = todo.text;
-    inputElement.setAttribute("readonly", "readonly")
     inputElement.setAttribute("readonly", "readonly");
 
     return inputElement;
