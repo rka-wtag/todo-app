@@ -20,6 +20,7 @@ const onCreateInputField = (todo) => {
 }
 
 const handleDelete = (todo) => {
+    searchInput$.value = "";
     todos = todos.filter(todoElement => todoElement.id !== todo.id);
     renderTodos(todos);
 }
@@ -31,6 +32,12 @@ const handleEdit = (inputElement, editButton) => {
         inputElement.removeAttribute("readonly");
     }else{
         todos = todos.filter(todo => todo.text !== currentText);
+        const todoObj = {
+            id : Date.now(),
+            text : inputElement.value,
+            done : false
+        };
+        todos.push(todoObj);
         editButton.innerText = 'Edit';
         inputElement.setAttribute("readonly", "readonly");
     }
@@ -86,6 +93,7 @@ const onCreateCheckbox = (todo, inputElement) => {
 
 const onCreateElement = (todo) => {
     const todoElement = document.createElement('li');
+    todoElement.classList.add('task');
     const inputElement = onCreateInputField(todo);
     const todoDeleteButton$ = onCreateDeleteButton(todo);
     const todoEditButton$ = onCreateEditButton(inputElement);
