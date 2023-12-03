@@ -1,45 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      .completed {
-        text-decoration: line-through;
-        color: #888;
-      }
-      #todo-search {
-        margin-left: 2%;
-        margin-bottom: 1%;
-      }
-    </style>
-    <title>Document</title>
-  </head>
-  <body>
-    <header>
-      <div>
-        <input id="todo-search" type="text" placeholder="Search..." />
-        <br />
-        <form id="new-task-form" action="/submit" method="post">
-          <label for="name">Name:</label>
 
-          <textarea
-            type="text"
-            id="todo-input-box"
-            name="new-task-input"
-            rows="1"
-            required
-          ></textarea>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
 
+<body>
+  <header>
+    <div class="nav">
+      <form  id="new-task-form" action="/submit" method="post">
+        <label for="name">Name:</label>
+
+        <div class="nav__add-input-area">
+          <textarea type="text" id="todo-input-box" name="new-task-input" rows="1" required></textarea>
           <input id="todo-submit-button" type="submit" value="Submit" />
-        </form>
-      </div>
-    </header>
-    <main>
-      <h1>Todo list</h1>
-      <ul id="task-list"></ul>
-    </main>
+        </div>
+      </form>
+      <input id="todo-search" type="text" placeholder="Search..." />
+    </div>
+  </header>
+  <main>
+    <h1>Todo list</h1>
+    <ul id="task-list"></ul>
+  </main>
 
-    <script src="./app.js" type="module"></script>
-  </body>
+  <script src="./app.js" type="module"></script>
+</body>
+
 </html>
