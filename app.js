@@ -6,23 +6,38 @@ import {
 } from "./domElements.js";
 
 
-const todos = [];
+let todos = [];
 
-const createInputElement = (todo) => {
-
+const onCreateInputField = (todo) => {
     const inputElement = document.createElement('input');
     inputElement.classList.add("text");
     inputElement.type = "text";
     inputElement.value = todo.text;
     inputElement.setAttribute("readonly", "readonly")
-
     return inputElement;
 }
+const handleDelete = (todo) => {
+    todos = todos.filter(todoElement => todoElement.id !== todo.id);
+    renderTodos();
+}
 
-const createTodoElement = (todo) => {
+const onCreateDeleteButton = (todo) => {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('todo-delete-button');
+    deleteButton.innerText = 'Delete';
+
+    deleteButton.addEventListener('click', () => {
+        handleDelete(todo);
+    })
+    return deleteButton;
+}
+
+const onCreateElement = (todo) => {
     const todo$ = document.createElement('li');
-    const inputElement = createInputElement(todo);
+    const inputElement = onCreateInputField(todo);
+    const todoDeleteButton$ = onCreateDeleteButton(todo);
     todo$.appendChild(inputElement);
+    todo$.appendChild(todoDeleteButton$);
     return todo$;
 }
 
@@ -50,7 +65,7 @@ const renderTodos = () => {
     todoList$.innerHTML = null;
 
     todos.forEach(todo => {
-        todoList$.appendChild(createTodoElement(todo));
+        todoList$.appendChild(createElement(todo));
     }) 
 }
 
