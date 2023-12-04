@@ -16,28 +16,13 @@ const onCreateInputField = (todo) => {
     inputElement.setAttribute("readonly", "readonly")
     return inputElement;
 }
-const handleDelete = (todo) => {
-    todos = todos.filter(todoElement => todoElement.id !== todo.id);
-    renderTodos();
-}
 
-const onCreateDeleteButton = (todo) => {
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('todo-delete-button');
-    deleteButton.innerText = 'Delete';
 
-    deleteButton.addEventListener('click', () => {
-        handleDelete(todo);
-    })
-    return deleteButton;
-}
 
-const onCreateElement = (todo) => {
+const createElement = (todo) => {
     const todo$ = document.createElement('li');
     const inputElement = onCreateInputField(todo);
-    const todoDeleteButton$ = onCreateDeleteButton(todo);
     todo$.appendChild(inputElement);
-    todo$.appendChild(todoDeleteButton$);
     return todo$;
 }
 
