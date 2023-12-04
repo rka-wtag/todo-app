@@ -65,7 +65,7 @@ const renderTodos = () => {
     todoList$.innerHTML = null;
 
     todos.forEach(todo => {
-        todoList$.appendChild(onCreateElement(todo));
+        todoList$.appendChild(createElement(todo));
     }) 
 }
 
