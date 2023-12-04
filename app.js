@@ -8,20 +8,33 @@ import {
 
 let todos = [];
 
-const createInputField = (todo) => {
+const onCreateInputField = (todo) => {
     const inputElement = document.createElement('input');
     inputElement.classList.add("text");
     inputElement.type = "text";
     inputElement.value = todo.text;
-    inputElement.setAttribute("readonly", "readonly")
+    inputElement.setAttribute("readonly", "readonly");
+
     return inputElement;
 }
+
 const handleDelete = (todo) => {
     todos = todos.filter(todoElement => todoElement.id !== todo.id);
     renderTodos();
 }
 
-const createDeleteButton = (todo) => {
+const handleEdit = (inputElement, editButton) => {
+    if(editButton.innerText === 'Edit'){
+        editButton.innerText = 'Update';
+        inputElement.removeAttribute("readonly");
+    }else{
+        editButton.innerText = 'Edit';
+        inputElement.setAttribute("readonly", "readonly");
+    }
+
+}
+
+const onCreateDeleteButton = (todo) => {
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('todo-delete-button');
     deleteButton.innerText = 'Delete';
@@ -32,13 +45,27 @@ const createDeleteButton = (todo) => {
     return deleteButton;
 }
 
-const createElement = (todo) => {
-    const todo$ = document.createElement('li');
-    const inputElement = createInputField(todo);
-    const todoDeleteButton$ = createDeleteButton(todo);
-    todo$.appendChild(inputElement);
-    todo$.appendChild(todoDeleteButton$);
-    return todo$;
+const onCreateEditButton = (inputElement) => {
+    const editButton = document.createElement('button');
+    editButton.classList.add('todo-Edit-Button');
+    editButton.innerText = 'Edit';
+
+    editButton.addEventListener('click', () => {
+        handleEdit(inputElement, editButton);
+    })
+
+    return editButton;
+}
+
+const onCreateElement = (todo) => {
+    const todoElement = document.createElement('li');
+    const inputElement = onCreateInputField(todo);
+    const todoDeleteButton$ = onCreateDeleteButton(todo);
+    const todoEditButton$ = onCreateEditButton(inputElement);
+    todoElement.appendChild(inputElement);
+    todoElement.appendChild(todoDeleteButton$);
+    todoElement.appendChild(todoEditButton$);
+    return todoElement;
 }
 
 const handleAddTodo = (e) => {
@@ -63,9 +90,8 @@ const handleAddTodo = (e) => {
 
 const renderTodos = () => {
     todoList$.innerHTML = null;
-
     todos.forEach(todo => {
-        todoList$.appendChild(createElement(todo));
+        todoList$.appendChild(onCreateElement(todo));
     }) 
 }
 
