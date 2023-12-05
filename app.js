@@ -56,7 +56,7 @@ const handleDone = (todo, inputElement) => {
   inputElement.classList.toggle("completed", todo.done);
 };
 
-const onCreateCheckbox = (todo, inputElement) => {
+const handleCreateCheckbox = (todo, inputElement) => {
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = todo.done;
@@ -73,7 +73,7 @@ const onCreateElement = (todo) => {
   const inputElement = onCreateInputField(todo);
   const todoDeleteButton$ = onCreateDeleteButton(todo);
   const todoEditButton$ = onCreateEditButton(inputElement);
-  const checkbox = onCreateCheckbox(todo, inputElement);
+  const checkbox = handleCreateCheckbox(todo, inputElement);
   inputElement.classList.toggle("completed", todo.done);
   todoElement.appendChild(checkbox);
   todoElement.appendChild(inputElement);
