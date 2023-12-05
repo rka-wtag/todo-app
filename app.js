@@ -28,18 +28,14 @@ const createDeleteButton = (todo) => {
     deleteButton.classList.add('todo-delete-button');
     deleteButton.innerText = 'Delete';
 
-    deleteButton.addEventListener('click', () => {
-        handleDelete(todo);
-    })
-    return deleteButton;
 }
+
 
 const createElement = (todo) => {
     const todo$ = document.createElement('li');
     const inputElement = createInputField(todo);
     const todoDeleteButton$ = createDeleteButton(todo);
     todo$.appendChild(inputElement);
-    todo$.appendChild(todoDeleteButton$);
     return todo$;
 }
 
