@@ -26,32 +26,8 @@ const createDeleteButton = (todo) => {
   deleteButton.addEventListener("click", () => {
     handleDelete(todo);
   });
+
   return deleteButton;
-};
-
-const handleEdit = (inputElement, editButton) => {
-  if (inputElement.getAttribute("data-state") === 'edit') {
-    editButton.innerText = "Update";
-    inputElement.removeAttribute("readonly");
-    inputElement.setAttribute("data-state", "update");
-
-    return;
-  }
-  editButton.innerText = "Edit";
-  inputElement.setAttribute("readonly", "readonly");
-  inputElement.setAttribute("data-state", "edit");
-};
-
-const createEditButton = (inputElement) => {
-  const editButton = document.createElement("button");
-  editButton.classList.add("todo-Edit-Button");
-  editButton.innerText = "Edit";
-
-  editButton.addEventListener("click", () => {
-    handleEdit(inputElement, editButton);
-  });
-
-  return editButton;
 };
 
 const createElement = (todo) => {
@@ -73,7 +49,17 @@ const handleAddTodo = (e) => {
     alert("Please fill out the task");
     return;
   }
+  e.preventDefault();
 
+  if (!todoInputBox$.value) {
+    alert("Please fill out the task");
+    return;
+  }
+
+  const todo = {
+    id: Date.now(),
+    text: todoInputBox$.value,
+  };
   const todo = {
     id: Date.now(),
     text: todoInputBox$.value,
