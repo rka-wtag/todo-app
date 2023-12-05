@@ -44,18 +44,20 @@ const handleAddTodo = (e) => {
     return;
   }
 
-  const todoObj = {
+  const todo = {
     id: Date.now(),
     text: todoInputBox$.value,
   };
 
   todos.push(todoObj);
   todoInputBox$.value = "";
+
   renderTodos();
 };
 
 const renderTodos = () => {
   todoList$.innerHTML = null;
+
   todos.forEach((todo) => {
     todoList$.appendChild(createElement(todo));
   });
