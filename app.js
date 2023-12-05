@@ -32,7 +32,31 @@ const createDeleteButton = (todo) => {
         handleDelete(todo);
     })
     return deleteButton;
+}
 
+
+const handleEdit = (inputElement, editButton) => {
+        if(editButton.innerText === 'Edit'){
+            editButton.innerText = 'Update';
+            inputElement.removeAttribute("readonly");
+        }else{
+            editButton.innerText = 'Edit';
+            inputElement.setAttribute("readonly", "readonly");
+        }
+    
+    
+}
+
+const createEditButton = (inputElement) => {
+    const editButton = document.createElement('button');
+    editButton.classList.add('todo-Edit-Button');
+    editButton.innerText = 'Edit';
+
+    editButton.addEventListener('click', () => {
+        handleEdit(inputElement, editButton);
+    })
+
+    return editButton;
 }
 
 
@@ -40,7 +64,11 @@ const createElement = (todo) => {
     const todo$ = document.createElement('li');
     const inputElement = createInputField(todo);
     const todoDeleteButton$ = createDeleteButton(todo);
+    const todoEditButton$ = createEditButton(inputElement);
     todo$.appendChild(inputElement);
+    todo$.appendChild(todoDeleteButton$);
+    todo$.appendChild(todoEditButton$);
+
     return todo$;
 }
 
