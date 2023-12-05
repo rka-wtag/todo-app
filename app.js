@@ -35,6 +35,7 @@ const createElement = (todo) => {
   const todoDeleteButton$ = createDeleteButton(todo);
   todo$.appendChild(inputElement);
   todo$.appendChild(todoDeleteButton$);
+  
   return todo$;
 };
 
