@@ -8,6 +8,7 @@ const createInputField = (todo) => {
   inputElement.type = "text";
   inputElement.value = todo.text;
   inputElement.setAttribute("readonly", "readonly");
+  inputElement.setAttribute("data-state", "edit");
 
   return inputElement;
 };
@@ -29,13 +30,16 @@ const createDeleteButton = (todo) => {
 };
 
 const handleEdit = (inputElement, editButton) => {
-  if (editButton.innerText === "Edit") {
+  if (inputElement.getAttribute("data-state") === 'edit') {
     editButton.innerText = "Update";
     inputElement.removeAttribute("readonly");
-  } else {
-    editButton.innerText = "Edit";
-    inputElement.setAttribute("readonly", "readonly");
+    inputElement.setAttribute("data-state", "update");
+
+    return;
   }
+  editButton.innerText = "Edit";
+  inputElement.setAttribute("readonly", "readonly");
+  inputElement.setAttribute("data-state", "edit");
 };
 
 const createEditButton = (inputElement) => {
@@ -70,12 +74,12 @@ const handleAddTodo = (e) => {
     return;
   }
 
-  const todoObj = {
+  const todo = {
     id: Date.now(),
     text: todoInputBox$.value,
   };
 
-  todos.push(todoObj);
+  todos.push(todo);
   todoInputBox$.value = "";
   renderTodos();
 };
