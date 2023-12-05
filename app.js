@@ -28,6 +28,11 @@ const createDeleteButton = (todo) => {
     deleteButton.classList.add('todo-delete-button');
     deleteButton.innerText = 'Delete';
 
+    deleteButton.addEventListener('click', () => {
+        handleDelete(todo);
+    })
+    return deleteButton;
+
 }
 
 
