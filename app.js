@@ -34,7 +34,7 @@ const handleAddTodo = (e) => {
         return;
     }
 
-    const todoObj = {
+    const todo = {
         id : Date.now(),
         text : todoInputBox$.value,
     };
