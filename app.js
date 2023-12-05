@@ -2,19 +2,40 @@ import { todoInputBox$, todoList$, todoSubmitButton$ } from "./domElements.js";
 
 let todos = [];
 
-const onCreateInputField = (todo) => {
+const createInputField = (todo) => {
   const inputElement = document.createElement("input");
   inputElement.classList.add("text");
   inputElement.type = "text";
   inputElement.value = todo.text;
   inputElement.setAttribute("readonly", "readonly");
+
   return inputElement;
+};
+
+const handleDelete = (todo) => {
+  todos = todos.filter((todoElement) => todoElement.id !== todo.id);
+  renderTodos();
+};
+
+const createDeleteButton = (todo) => {
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add("todo-delete-button");
+  deleteButton.innerText = "Delete";
+
+  deleteButton.addEventListener("click", () => {
+    handleDelete(todo);
+  });
+
+  return deleteButton;
 };
 
 const createElement = (todo) => {
   const todo$ = document.createElement("li");
-  const inputElement = onCreateInputField(todo);
+  const inputElement = createInputField(todo);
+  const todoDeleteButton$ = createDeleteButton(todo);
   todo$.appendChild(inputElement);
+  todo$.appendChild(todoDeleteButton$);
+  
   return todo$;
 };
 
@@ -31,7 +52,7 @@ const handleAddTodo = (e) => {
     text: todoInputBox$.value,
   };
 
-  todos.push(todoObj);
+  todos.push(todo);
   todoInputBox$.value = "";
 
   renderTodos();
