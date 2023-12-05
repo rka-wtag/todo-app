@@ -29,6 +29,27 @@ const createDeleteButton = (todo) => {
 
   return deleteButton;
 };
+const handleEdit = (inputElement, editButton) => {
+    if (inputElement.getAttribute("data-state") === 'edit') {
+      editButton.innerText = "Update";
+      inputElement.removeAttribute("readonly");
+      inputElement.setAttribute("data-state", "update");
+      return;
+    }
+    editButton.innerText = "Edit";
+    inputElement.setAttribute("readonly", "readonly");
+    inputElement.setAttribute("data-state", "edit");
+  };
+  const createEditButton = (inputElement) => {
+    const editButton = document.createElement("button");
+    editButton.classList.add("todo-Edit-Button");
+    editButton.innerText = "Edit";
+    editButton.addEventListener("click", () => {
+      handleEdit(inputElement, editButton);
+    });
+
+    return editButton;
+}
 
 const createElement = (todo) => {
   const todo$ = document.createElement("li");
@@ -56,10 +77,6 @@ const handleAddTodo = (e) => {
     return;
   }
 
-  const todo = {
-    id: Date.now(),
-    text: todoInputBox$.value,
-  };
   const todo = {
     id: Date.now(),
     text: todoInputBox$.value,
