@@ -1,101 +1,90 @@
-
-import {
-    todoInputBox$,
-    todoList$,
-    todoSubmitButton$
-} from "./domElements.js";
-
+import { todoInputBox$, todoList$, todoSubmitButton$ } from "./domElements.js";
 
 let todos = [];
 
 const createInputField = (todo) => {
-    const inputElement = document.createElement('input');
-    inputElement.classList.add("text");
-    inputElement.type = "text";
-    inputElement.value = todo.text;
-    inputElement.setAttribute("readonly", "readonly");
+  const inputElement = document.createElement("input");
+  inputElement.classList.add("text");
+  inputElement.type = "text";
+  inputElement.value = todo.text;
+  inputElement.setAttribute("readonly", "readonly");
 
-    return inputElement;
-}
+  return inputElement;
+};
 
 const handleDelete = (todo) => {
-    todos = todos.filter(todoElement => todoElement.id !== todo.id);
-    renderTodos();
-}
+  todos = todos.filter((todoElement) => todoElement.id !== todo.id);
+  renderTodos();
+};
 
 const createDeleteButton = (todo) => {
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('todo-delete-button');
-    deleteButton.innerText = 'Delete';
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add("todo-delete-button");
+  deleteButton.innerText = "Delete";
 
-    deleteButton.addEventListener('click', () => {
-        handleDelete(todo);
-    })
-    return deleteButton;
-}
-
+  deleteButton.addEventListener("click", () => {
+    handleDelete(todo);
+  });
+  return deleteButton;
+};
 
 const handleEdit = (inputElement, editButton) => {
-        if(editButton.innerText === 'Edit'){
-            editButton.innerText = 'Update';
-            inputElement.removeAttribute("readonly");
-        }else{
-            editButton.innerText = 'Edit';
-            inputElement.setAttribute("readonly", "readonly");
-        }
-    
-    
-}
+  if (editButton.innerText === "Edit") {
+    editButton.innerText = "Update";
+    inputElement.removeAttribute("readonly");
+  } else {
+    editButton.innerText = "Edit";
+    inputElement.setAttribute("readonly", "readonly");
+  }
+};
 
 const createEditButton = (inputElement) => {
-    const editButton = document.createElement('button');
-    editButton.classList.add('todo-Edit-Button');
-    editButton.innerText = 'Edit';
+  const editButton = document.createElement("button");
+  editButton.classList.add("todo-Edit-Button");
+  editButton.innerText = "Edit";
 
-    editButton.addEventListener('click', () => {
-        handleEdit(inputElement, editButton);
-    })
+  editButton.addEventListener("click", () => {
+    handleEdit(inputElement, editButton);
+  });
 
-    return editButton;
-}
-
+  return editButton;
+};
 
 const createElement = (todo) => {
-    const todo$ = document.createElement('li');
-    const inputElement = createInputField(todo);
-    const todoDeleteButton$ = createDeleteButton(todo);
-    const todoEditButton$ = createEditButton(inputElement);
-    todo$.appendChild(inputElement);
-    todo$.appendChild(todoDeleteButton$);
-    todo$.appendChild(todoEditButton$);
+  const todo$ = document.createElement("li");
+  const inputElement = createInputField(todo);
+  const todoDeleteButton$ = createDeleteButton(todo);
+  const todoEditButton$ = createEditButton(inputElement);
+  todo$.appendChild(inputElement);
+  todo$.appendChild(todoDeleteButton$);
+  todo$.appendChild(todoEditButton$);
 
-    return todo$;
-}
+  return todo$;
+};
 
 const handleAddTodo = (e) => {
-    e.preventDefault();
-    
-    if(!todoInputBox$.value){
-        alert('Please fill out the task');
-        return;
-    }
+  e.preventDefault();
 
-    const todoObj = {
-        id : Date.now(),
-        text : todoInputBox$.value,
-    };
+  if (!todoInputBox$.value) {
+    alert("Please fill out the task");
+    return;
+  }
 
-    todos.push(todoObj);
-    todoInputBox$.value = ""
-    renderTodos()
-   
-}
+  const todoObj = {
+    id: Date.now(),
+    text: todoInputBox$.value,
+  };
+
+  todos.push(todoObj);
+  todoInputBox$.value = "";
+  renderTodos();
+};
 
 const renderTodos = () => {
-    todoList$.innerHTML = null;
-    todos.forEach(todo => {
-        todoList$.appendChild(createElement(todo));
-    }) 
-}
+  todoList$.innerHTML = null;
+  todos.forEach((todo) => {
+    todoList$.appendChild(createElement(todo));
+  });
+};
 
-todoSubmitButton$.addEventListener('click', handleAddTodo)
+todoSubmitButton$.addEventListener("click", handleAddTodo);
