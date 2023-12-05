@@ -25,6 +25,7 @@ const createDeleteButton = (todo) => {
   deleteButton.addEventListener("click", () => {
     handleDelete(todo);
   });
+
   return deleteButton;
 };
 
@@ -33,6 +34,7 @@ const createElement = (todo) => {
   const inputElement = createInputField(todo);
   const todoDeleteButton$ = createDeleteButton(todo);
   todo$.appendChild(inputElement);
+  todo$.appendChild(todoDeleteButton$);
   return todo$;
 };
 
@@ -49,7 +51,7 @@ const handleAddTodo = (e) => {
     text: todoInputBox$.value,
   };
 
-  todos.push(todoObj);
+  todos.push(todo);
   todoInputBox$.value = "";
 
   renderTodos();
