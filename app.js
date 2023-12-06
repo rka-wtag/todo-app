@@ -1,4 +1,9 @@
-import { todoInputBox$, todoList$, todoSubmitButton$ } from "./domElements.js";
+import {
+  searchInput$,
+  todoInputBox$,
+  todoList$,
+  todoSubmitButton$,
+} from "./domElements.js";
 
 let todos = [];
 
@@ -15,7 +20,7 @@ const createInputField = (todo) => {
 
 const handleDelete = (todo) => {
   todos = todos.filter((todoElement) => todoElement.id !== todo.id);
-  renderTodos();
+  renderTodos(todos);
 };
 
 const createDeleteButton = (todo) => {
@@ -29,23 +34,32 @@ const createDeleteButton = (todo) => {
 
   return deleteButton;
 };
-const handleEdit = (inputElement, editButton) => {
-  if (inputElement.getAttribute("data-state") === "edit") {
-    editButton.innerText = "Update";
-    inputElement.removeAttribute("readonly");
-    inputElement.setAttribute("data-state", "update");
-    return;
-  }
+const handleEdit = (inputElement, editButton, todo, checkbox) => {
+  if (inputElement.classList.contains("completed")) return;
+  todos = todos.filter((todoElement) => todoElement.id !== todo.id);
+  editButton.innerText = "Update";
+  inputElement.removeAttribute("readonly");
+  inputElement.setAttribute("data-state", "update");
+};
+
+const handleUpdate = (inputElement, editButton, todo) => {
   editButton.innerText = "Edit";
   inputElement.setAttribute("readonly", "readonly");
   inputElement.setAttribute("data-state", "edit");
+  todo.text = inputElement.value;
+  todos.push(todo);
+  renderTodos(todos);
+  searchInput$.value = "";
 };
-const createEditButton = (inputElement) => {
+const createEditButton = (inputElement, todo) => {
   const editButton = document.createElement("button");
   editButton.classList.add("todo-Edit-Button");
   editButton.innerText = "Edit";
+
   editButton.addEventListener("click", () => {
-    handleEdit(inputElement, editButton);
+    inputElement.getAttribute("data-state") === "edit"
+      ? handleEdit(inputElement, editButton, todo)
+      : handleUpdate(inputElement, editButton, todo);
   });
 
   return editButton;
@@ -66,14 +80,22 @@ const handleCreateCheckbox = (todo, inputElement) => {
 
   return checkbox;
 };
+const handleSearch = (e) => {
+  let searchText = e.target.value;
+  searchText = searchText.trim().toLowerCase();
+  let filteredList = todos.filter((todo) =>
+    todo.text.toLowerCase().includes(searchText)
+  );
+  renderTodos(filteredList);
+};
 const createElement = (todo) => {
   const todo$ = document.createElement("li");
   const inputElement = createInputField(todo);
   const todoDeleteButton$ = createDeleteButton(todo);
-  const todoEditButton$ = createEditButton(inputElement);
   const checkbox = handleCreateCheckbox(todo, inputElement);
   inputElement.classList.toggle("completed", todo.done);
   todo$.appendChild(checkbox);
+  const todoEditButton$ = createEditButton(inputElement, todo);
   todo$.appendChild(inputElement);
   todo$.appendChild(todoDeleteButton$);
   todo$.appendChild(todoEditButton$);
@@ -95,22 +117,28 @@ const handleAddTodo = (e) => {
     return;
   }
 
-  const todo = {
-    id: Date.now(),
-    text: todoInputBox$.value,
-    done: false
-  };
+  const todo = createTodo(todoInputBox$.value);
 
   todos.push(todo);
   todoInputBox$.value = "";
-  renderTodos();
+  renderTodos(todos);
 };
 
-const renderTodos = () => {
+const createTodo = (text) => {
+  const todo = {
+    id: Date.now(),
+    text: text,
+    done: false,
+  };
+  return todo;
+};
+
+const renderTodos = (todos) => {
   todoList$.innerHTML = null;
   todos.forEach((todo) => {
     todoList$.appendChild(createElement(todo));
   });
 };
 
+searchInput$.addEventListener("input", handleSearch);
 todoSubmitButton$.addEventListener("click", handleAddTodo);
