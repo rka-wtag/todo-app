@@ -19,6 +19,7 @@ const createInputField = (todo) => {
 };
 
 const handleDelete = (todo) => {
+  searchInput$.value = "";
   todos = todos.filter((todoElement) => todoElement.id !== todo.id);
   renderTodos(todos);
 };
