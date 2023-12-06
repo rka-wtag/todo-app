@@ -30,32 +30,50 @@ const createDeleteButton = (todo) => {
   return deleteButton;
 };
 const handleEdit = (inputElement, editButton) => {
-    if (inputElement.getAttribute("data-state") === 'edit') {
-      editButton.innerText = "Update";
-      inputElement.removeAttribute("readonly");
-      inputElement.setAttribute("data-state", "update");
-      return;
-    }
-    editButton.innerText = "Edit";
-    inputElement.setAttribute("readonly", "readonly");
-    inputElement.setAttribute("data-state", "edit");
-  };
-  const createEditButton = (inputElement) => {
-    const editButton = document.createElement("button");
-    editButton.classList.add("todo-Edit-Button");
-    editButton.innerText = "Edit";
-    editButton.addEventListener("click", () => {
-      handleEdit(inputElement, editButton);
-    });
+  if (inputElement.getAttribute("data-state") === "edit") {
+    editButton.innerText = "Update";
+    inputElement.removeAttribute("readonly");
+    inputElement.setAttribute("data-state", "update");
+    return;
+  }
+  editButton.innerText = "Edit";
+  inputElement.setAttribute("readonly", "readonly");
+  inputElement.setAttribute("data-state", "edit");
+};
+const createEditButton = (inputElement) => {
+  const editButton = document.createElement("button");
+  editButton.classList.add("todo-Edit-Button");
+  editButton.innerText = "Edit";
+  editButton.addEventListener("click", () => {
+    handleEdit(inputElement, editButton);
+  });
 
-    return editButton;
-}
+  return editButton;
+};
+const handleDone = (todo, inputElement) => {
+  todo.done = !todo.done;
+  inputElement.classList.toggle("completed", todo.done);
+};
 
+const handleCreateCheckbox = (todo, inputElement) => {
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = todo.done;
+
+  checkbox.addEventListener("click", () => {
+    handleDone(todo, inputElement);
+  });
+
+  return checkbox;
+};
 const createElement = (todo) => {
   const todo$ = document.createElement("li");
   const inputElement = createInputField(todo);
   const todoDeleteButton$ = createDeleteButton(todo);
   const todoEditButton$ = createEditButton(inputElement);
+  const checkbox = handleCreateCheckbox(todo, inputElement);
+  inputElement.classList.toggle("completed", todo.done);
+  todo$.appendChild(checkbox);
   todo$.appendChild(inputElement);
   todo$.appendChild(todoDeleteButton$);
   todo$.appendChild(todoEditButton$);
@@ -80,6 +98,7 @@ const handleAddTodo = (e) => {
   const todo = {
     id: Date.now(),
     text: todoInputBox$.value,
+    done: false
   };
 
   todos.push(todo);
