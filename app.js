@@ -35,32 +35,30 @@ const createDeleteButton = (todo) => {
 
   return deleteButton;
 };
-const handleEdit = (inputElement, editButton, todo, checkbox) => {
-  if (inputElement.classList.contains("completed")) return;
-  todos = todos.filter((todoElement) => todoElement.id !== todo.id);
-  editButton.innerText = "Update";
-  inputElement.removeAttribute("readonly");
-  inputElement.setAttribute("data-state", "update");
+const handleEdit = (inputElement, editButton, todo) => {
+  if (inputElement.getAttribute("data-checkbox-state") === "completed") return;
+  const modifiedTodo = todos.find((item) => item.id === todo.id);
+  if (inputElement.getAttribute("data-state") === "edit") {
+    inputElement.removeAttribute("readonly");
+    editButton.innerText = "Update";
+    inputElement.setAttribute("data-state", "update");
+  } else {
+    editButton.innerText = "Edit";
+    inputElement.setAttribute("readonly", "readonly");
+    inputElement.setAttribute("data-state", "edit");
+    modifiedTodo.text = inputElement.value;
+    renderTodos(todos);
+    searchInput$.value = "";
+  }
 };
 
-const handleUpdate = (inputElement, editButton, todo) => {
-  editButton.innerText = "Edit";
-  inputElement.setAttribute("readonly", "readonly");
-  inputElement.setAttribute("data-state", "edit");
-  todo.text = inputElement.value;
-  todos.push(todo);
-  renderTodos(todos);
-  searchInput$.value = "";
-};
 const createEditButton = (inputElement, todo) => {
   const editButton = document.createElement("button");
   editButton.classList.add("todo-Edit-Button");
   editButton.innerText = "Edit";
 
   editButton.addEventListener("click", () => {
-    inputElement.getAttribute("data-state") === "edit"
-      ? handleEdit(inputElement, editButton, todo)
-      : handleUpdate(inputElement, editButton, todo);
+    handleEdit(inputElement, editButton, todo);
   });
 
   return editButton;
@@ -68,6 +66,8 @@ const createEditButton = (inputElement, todo) => {
 const handleDone = (todo, inputElement) => {
   todo.done = !todo.done;
   inputElement.classList.toggle("completed", todo.done);
+  if (todo.done) inputElement.setAttribute("data-checkbox-state", "completed");
+  else inputElement.setAttribute("data-checkbox-state", "notCompleted");
 };
 
 const handleCreateCheckbox = (todo, inputElement) => {
