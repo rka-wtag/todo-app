@@ -82,12 +82,11 @@ const handleCreateCheckbox = (todo, inputElement) => {
   return checkbox;
 };
 const handleSearch = (e) => {
-  let searchText = e.target.value;
-  searchText = searchText.trim().toLowerCase();
-  let filteredList = todos.filter((todo) =>
+  let searchText = e.target.value.trim().toLowerCase();
+  let filteredTodos = todos.filter((todo) =>
     todo.text.toLowerCase().includes(searchText)
   );
-  renderTodos(filteredList);
+  renderTodos(filteredTodos);
 };
 const createElement = (todo) => {
   const todo$ = document.createElement("li");
