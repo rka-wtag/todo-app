@@ -6,7 +6,12 @@
     <style>
       .completed {
         text-decoration: line-through;
-        color: #888;
+        color: 
+        #888;
+      }
+      #todo-search {
+        margin-left: 2%;
+        margin-bottom: 1%;
       }
     </style>
     <title>Document</title>
@@ -14,6 +19,8 @@
   <body>
     <header>
       <div>
+        <input id="todo-search" type="text" placeholder="Search..." />
+        <br />
         <form id="new-task-form" action="/submit" method="post">
           <label for="name">Name:</label>
 
