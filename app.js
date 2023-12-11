@@ -135,7 +135,8 @@ const createTodo = (text) => {
 
 const renderTodos = (todos) => {
   todoList$.innerHTML = null;
-  todos.forEach((todo) => {
+  let sortedTodos = todos.sort((t1, t2) => t1.id - t2.id);
+  sortedTodos.forEach((todo) => {
     todoList$.appendChild(createElement(todo));
   });
 };
